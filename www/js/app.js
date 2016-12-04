@@ -25,15 +25,10 @@ function scan() {
                 //this is our url and token which will be concatenated with the UPC code to retrieve product data
                 //we should probably store the token somewhere secret in the future
                 const url = `http://www.searchupc.com//handlers/upcsearch.ashx?request_type=3&access_token=3D0B8DB1-8BBA-409A-85B5-9EE3E866FC1D&upc=${result.text}`;
-                $.get(url, function(data) {
-                    console.log('data', data);
-//                    var items = [];
-//                    $.each(data, function(key,val) {
-//                        console.log(data);
-//                        alert(data);
-//                        items.push(key, val);
-//                    });
-//                    alert(items);
+                $.get(url, function(data) { 
+                    var parse = JSON.parse(data);
+                    alert('Product added to inventory: ' + parse["0"]["productname"]);
+                    console.log('Product added to inventory: ', parse["0"]["productname"]);
                 });
             },
             function (error) {
