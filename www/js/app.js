@@ -1,21 +1,3 @@
-/*
- * Please see the included README.md file for license terms and conditions.
- */
-
-
-// This file is a suggested starting place for your code.
-// It is completely optional and not required.
-// Note the reference that includes it in the index.html file.
-
-
-/*jslint browser:true, devel:true, white:true, vars:true */
-/*global $:false, intel:false app:false, dev:false, cordova:false */
-
-
-
-// This file contains your event handlers, the center of your application.
-// NOTE: see app.initEvents() in init-app.js for event handler initialization code.
-
 function myEventHandler() {
     "use strict";
 
@@ -33,36 +15,44 @@ function myEventHandler() {
     console.log(str);
 }
 
-
-// ...additional event handlers here...
-
-function thirdPartyEmulator() {
-    alert("This feature uses a third party barcode scanner plugin. Third party plugins are not supported on emulator or app preview. Please build app to test.");
-}
-
 function scan() {
     "use strict";
     var fName = "scan():";
     console.log(fName, "entry");
     try {
-        if (window.tinyHippos) {
-            thirdPartyEmulator();
-            console.log(fName, "emulator alert");
-        } else {
-            cordova.plugins.barcodeScanner.scan(
-                function (result) {
-                    console.log(fName, "Scanned result found!");
-                    alert("We got a barcode!\n" +
-                        "Result: " + result.text + "\n" +
-                        "Format: " + result.format + "\n" +
-                        "Cancelled: " + result.cancelled + "\n\n" +
-                        "You may use the " + result.format + " - '" + result.text + "' to look up your product in any UPC database like http://www.upcdatabase.com/");
-                },
-                function (error) {
-                    alert("Scanning failed: " + error);
+        cordova.plugins.barcodeScanner.scan(
+            function (result) {
+                //this is our url and token which will be concatenated with the UPC code to retrieve product data
+                //we should probably store the token somewhere secret in the future
+                const url = `http://www.searchupc.com//handlers/upcsearch.ashx?request_type=3&access_token=3D0B8DB1-8BBA-409A-85B5-9EE3E866FC1D&upc=${result.text}`;
+                var xhr = new XMLHttpRequest();
+                xhr.setRequestHeader("Access-Control-Allow-Origin","*");
+                xhr.open('GET', url, true);
+                xhr.send();
+                xhr.addEventListener("readystatechange", processRequest, false);
+                function processRequest(e) {
+                    console.log('processRequest', xhr.status);
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        console.log('response', response);
+                    }  
                 }
+               
+                //this ajax request is not working; may need to default to just plain vanilla JS
+//                $.getJSON(url.toString(), function(data) {
+//                    var items = [];
+//                    $.each(data, function(key,val) {
+//                        console.log(data);
+//                        alert(data);
+//                        items.push(key, val);
+//                    });
+//                    alert(items);
+//                })  
+            },
+            function (error) {
+                alert("Scanning failed: " + error);
+            }
             );
-        }
     } catch (e) {
         console.log(fName, "catch, failure");
     }
