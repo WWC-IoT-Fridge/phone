@@ -42,8 +42,6 @@ app.initEvents = function() {
     "use strict" ;
     var fName = "app.initEvents():" ;
     app.consoleLog(fName, "entry") ;
-    
-    makeHttpCall();
 
     // NOTE: initialize your third-party libraries and event handlers
 
@@ -86,24 +84,6 @@ app.initEvents = function() {
     app.consoleLog(fName, "exit") ;
 } ;
 document.addEventListener("app.Ready", app.initEvents, false) ;
-
-function makeHttpCall() {
-    console.log('make http call');
-//    const url = `http://www.searchupc.com//handlers/upcsearch.ashx?request_type=3&access_token=3D0B8DB1-8BBA-409A-85B5-9EE3E866FC1D&upc=4021419265886`;
-//    var xhr = new XMLHttpRequest();
-//    xhr.open('GET', url, true);
-//    xhr.send();
-//    xhr.addEventListener("readystatechange", processRequest, false);
-//    function processRequest(e) {
-//        console.log('processRequest', xhr.status);
-//        if (xhr.readyState == 4 && xhr.status == 200) {
-//            var response = JSON.parse(xhr.responseText);
-//            console.log('response', response);
-//        }  
-//    }
-}
-
-
 
 // Just a bunch of useful debug console.log() messages.
 // Runs after underlying device native code and webview/browser is ready.
