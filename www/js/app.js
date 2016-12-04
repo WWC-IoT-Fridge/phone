@@ -25,21 +25,22 @@ function scan() {
                 //this is our url and token which will be concatenated with the UPC code to retrieve product data
                 //we should probably store the token somewhere secret in the future
                 const url = `http://www.searchupc.com//handlers/upcsearch.ashx?request_type=3&access_token=3D0B8DB1-8BBA-409A-85B5-9EE3E866FC1D&upc=${result.text}`;
-                var xhr = new XMLHttpRequest();
-                xhr.setRequestHeader("Access-Control-Allow-Origin","*");
-                xhr.open('GET', url, true);
-                xhr.send();
-                xhr.addEventListener("readystatechange", processRequest, false);
-                function processRequest(e) {
-                    console.log('processRequest', xhr.status);
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        var response = JSON.parse(xhr.responseText);
-                        console.log('response', response);
-                    }  
-                }
+//                var xhr = new XMLHttpRequest();
+//                xhr.setRequestHeader("Access-Control-Allow-Origin","*");
+//                xhr.open('GET', url, true);
+//                xhr.send();
+//                xhr.addEventListener("readystatechange", processRequest, false);
+//                function processRequest(e) {
+//                    console.log('processRequest', xhr.status);
+//                    if (xhr.readyState == 4 && xhr.status == 200) {
+//                        var response = JSON.parse(xhr.responseText);
+//                        console.log('response', response);
+//                    }  
+//                }
                
-                //this ajax request is not working; may need to default to just plain vanilla JS
-//                $.getJSON(url.toString(), function(data) {
+//                this ajax request is not working; may need to default to just plain vanilla JS
+                $.get(url, function(data) {
+                    console.log('data', data);
 //                    var items = [];
 //                    $.each(data, function(key,val) {
 //                        console.log(data);
@@ -47,7 +48,7 @@ function scan() {
 //                        items.push(key, val);
 //                    });
 //                    alert(items);
-//                })  
+                });
             },
             function (error) {
                 alert("Scanning failed: " + error);
